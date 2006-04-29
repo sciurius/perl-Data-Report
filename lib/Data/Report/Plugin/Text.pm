@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Wed Dec 28 13:21:11 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Sat Apr 29 16:16:15 2006
-# Update Count    : 114
+# Last Modified On: Sat Apr 29 19:02:29 2006
+# Update Count    : 116
 # Status          : Unknown, Use with caution!
 
 package Data::Report::Plugins::Text;
@@ -14,7 +14,7 @@ use warnings;
 use base qw(Data::Report::Base);
 use Carp;
 
-################ API ################
+################ User API ################
 
 sub start {
     my $self = shift;
@@ -23,13 +23,6 @@ sub start {
     $self->_make_format;
     $self->{lines} = 0;
     $self->{page} = $=;
-}
-
-sub finish {
-    my $self = shift;
-    $self->_argcheck(0);
-    $self->_checkskip(1);	# cancel skips.
-    $self->SUPER::finish();
 }
 
 sub add {
@@ -152,6 +145,13 @@ sub add {
     }
 }
 
+sub finish {
+    my $self = shift;
+    $self->_argcheck(0);
+    $self->_checkskip(1);	# cancel skips.
+    $self->SUPER::finish();
+}
+
 ################ Pseudo-Internal (used by Base class) ################
 
 sub _std_heading {
@@ -218,12 +218,10 @@ sub _checkskip {
 
 sub _needskip {
     my $self = shift;
-    $self->_argcheck(1);
     $self->{needskip } = shift;
 }
 sub _does_needskip {
     my $self = shift;
-    $self->_argcheck(0);
     $self->{needskip};
 }
 

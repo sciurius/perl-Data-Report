@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Wed Dec 28 13:18:40 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Sat Apr 29 16:15:25 2006
-# Update Count    : 264
+# Last Modified On: Sat Apr 29 19:05:49 2006
+# Update Count    : 279
 # Status          : Unknown, Use with caution!
 
 package Data::Report::Base;
@@ -13,20 +13,7 @@ use strict;
 use warnings;
 use Carp;
 
-sub _argcheck {
-    my ($pkg, $exp) = @_;
-    package DB;
-    my ($package, $filename, $line, $subroutine) = caller(1);
-    my $got = scalar(@DB::args)-1;
-    return if $exp == $got;
-    $got ||= "none";
-    $Carp::CarpLevel++;
-    Carp::croak($subroutine." requires ".
-	  ( $exp == 0 ? "no arguments" :
-	    $exp == 1 ? " 1 argument" :
-	    " $exp arguments" ).
-	  " ($got supplied)");
-}
+################ User API ################
 
 sub new {
     my ($class, %args) = @_;
@@ -54,6 +41,57 @@ sub new {
     $self;
 }
 
+sub start {
+    my $self = shift;
+    $self->_argcheck(0);
+    croak("No layout specified") unless $self->{_base_fdata};
+    croak("Reporter already started") if $self->{_base_started};
+
+    $self->{_base_needpre} = 1;
+    $self->{_base_needhdr} = 1;
+    $self->{_base_needskip} = 0;
+
+    $self->set_output(*STDOUT) unless $self->{_base_out};
+    $self->set_style("default") unless $self->{_base_style};
+    $self->set_heading($self->can("_std_heading"))
+      unless $self->{_base_heading};
+    $self->set_stylist($self->can("_std_stylist"))
+      unless $self->{_base_stylist};
+    $self->{_base_close} ||= sub {};
+
+    $self->{_base_started} = 1;
+    $self->{_base_used} = 0;
+}
+
+sub add {
+    my ($self, $data) = @_;
+    croak("Reporter not started") unless $self->{_base_started};
+
+    while ( my($k,$v) = each(%$data) ) {
+	croak("Invalid field: \"$k\"\n")
+	  unless defined $self->{_base_fdata}->{$k};
+    }
+
+}
+
+sub finish {
+    my $self = shift;
+    $self->_argcheck(0);
+    croak("Reporter not started") unless $self->{_base_started};
+    $self->{_base_started} = 0;
+}
+
+sub close {
+    my $self = shift;
+    $self->_argcheck(0);
+    croak("Reporter is not finished") if $self->{_base_started};
+    $self->{_base_close}->();
+}
+
+################ Attributes ################
+
+#### Style
+
 sub set_style {
     my ($self, $style) = @_;
     $self->_argcheck(1);
@@ -65,6 +103,8 @@ sub get_style {
     $self->_argcheck(0);
     $self->{_base_style};
 }
+
+#### Layout
 
 sub set_layout {
     my ($self, $layout) = @_;
@@ -89,23 +129,7 @@ sub set_layout {
     $self;
 }
 
-sub get_fields {
-    my $self = shift;
-    $self->_argcheck(0);
-    [ map { $_->{name} } @{$self->{_base_fields}} ];
-}
-
-sub _get_fields {
-    my $self = shift;
-    $self->_argcheck(0);
-    $self->{_base_fields};
-}
-
-sub _get_fdata {
-    my $self = shift;
-    $self->_argcheck(0);
-    $self->{_base_fdata};
-}
+#### Fields (order of)
 
 sub set_fields {
     my ($self, $f) = @_;
@@ -125,11 +149,13 @@ sub set_fields {
     return;
 }
 
-sub get_widths {
+sub get_fields {
     my $self = shift;
     $self->_argcheck(0);
-    { map { $_ => $self->{_base_fdata}->{$_}->{width} } $self->get_fields }
+    [ map { $_->{name} } @{$self->{_base_fields}} ];
 }
+
+#### Width (set one or more)
 
 sub set_width {
     my ($self, $w) = @_;
@@ -161,10 +187,19 @@ sub set_width {
     return;
 }
 
+#### Width (get all)
+
+sub get_widths {
+    my $self = shift;
+    $self->_argcheck(0);
+    { map { $_ => $self->{_base_fdata}->{$_}->{width} } $self->get_fields }
+}
+
+#### Output
+
 sub set_output {
     my ($self, $out) = @_;
     $self->_argcheck(1);
-    $self->{_base_close} = sub {};
     if ( ref($out) ) {
 	if ( UNIVERSAL::isa($out, 'SCALAR') ) {
 	    $self->{_base_out} = sub { $$out .= join("", @_) };
@@ -176,62 +211,41 @@ sub set_output {
 	}
 	else {
 	    $self->{_base_out}   = sub { print {$out} (@_) };
-	    $self->{_base_close} = sub { close($out) or croak("Close: $!") };
+	    $self->{_base_close} = sub { CORE::close($out) or croak("Close: $!") };
 	}
     }
     else {
 	open(my $fd, ">", $out)
 	  or croak("Cannot create \"$out\": $!");
 	$self->{_base_out}   = sub { print {$fd} (@_) };
-	$self->{_base_close} = sub { close($fd) or croak("Close \"$out\": $!") };
+	$self->{_base_close} = sub { CORE::close($fd) or croak("Close \"$out\": $!") };
     }
 }
 
-sub _print {
-    my $self = shift;
-    $self->{_base_out}->(@_);
-    $self->{_base_used}++;
-}
-
-sub close {
-    my $self = shift;
-    $self->_argcheck(0);
-    $self->{_base_close}->();
-}
+#### Stylist
 
 sub set_stylist {
-    my ($self, $stylist) = @_;
+    my ($self, $stylist_code) = @_;
     $self->_argcheck(1);
     croak("Stylist must be a function (code ref)")
-      unless UNIVERSAL::isa($stylist, 'CODE');
-    $self->{_base_stylist} = $stylist;
+      unless UNIVERSAL::isa($stylist_code, 'CODE');
+    $self->{_base_stylist} = $stylist_code;
 }
 
-sub start {
-    my $self = shift;
+sub get_stylist {
+    my ($self) = @_;
     $self->_argcheck(0);
-    croak("No layout specified") unless $self->{_base_fdata};
-    croak("Reporter already started") if $self->{_base_started};
-
-    $self->{_base_needpre} = 1;
-    $self->{_base_needhdr} = 1;
-    $self->{_base_needskip} = 0;
-
-    $self->set_output(*STDOUT) unless $self->{_base_out};
-    $self->set_style("default") unless $self->{_base_style};
-    $self->set_stylist(sub { return }) unless $self->{_base_stylist};
-    $self->set_heading($self->can("_std_heading")) unless $self->{_base_heading};
-
-    $self->{_base_started} = 1;
-    $self->{_base_used} = 0;
+    $self->{_base_stylist};
 }
+
+#### Heading generator
 
 sub set_heading {
-    my ($self, $header) = @_;
+    my ($self, $heading_code) = @_;
     $self->_argcheck(1);
     croak("Header must be a function (code ref)")
-      unless UNIVERSAL::isa($header, 'CODE');
-    $self->{_base_heading} = $header;
+      unless UNIVERSAL::isa($heading_code, 'CODE');
+    $self->{_base_heading} = $heading_code;
 }
 
 sub get_heading {
@@ -240,11 +254,39 @@ sub get_heading {
     $self->{_base_heading};
 }
 
-sub finish {
+################ Friend methods ################
+
+sub _argcheck {
+    my ($pkg, $exp) = @_;
+    package DB;
+    my ($package, $filename, $line, $subroutine) = caller(1);
+    my $got = scalar(@DB::args)-1;
+    return if $exp == $got;
+    $got ||= "none";
+    $Carp::CarpLevel++;
+    Carp::croak($subroutine." requires ".
+	  ( $exp == 0 ? "no arguments" :
+	    $exp == 1 ? " 1 argument" :
+	    " $exp arguments" ).
+	  " ($got supplied)");
+}
+
+sub _get_fields {
     my $self = shift;
     $self->_argcheck(0);
-    croak("Reporter not started") unless $self->{_base_started};
-    $self->{_base_started} = 0;
+    $self->{_base_fields};
+}
+
+sub _get_fdata {
+    my $self = shift;
+    $self->_argcheck(0);
+    $self->{_base_fdata};
+}
+
+sub _print {
+    my $self = shift;
+    $self->{_base_out}->(@_);
+    $self->{_base_used}++;
 }
 
 sub _started {
@@ -253,21 +295,11 @@ sub _started {
     $self->{_base_started};
 }
 
-sub add {
-    my ($self, $data) = @_;
-    croak("Reporter not started") unless $self->{_base_started};
-
-    while ( my($k,$v) = each(%$data) ) {
-	croak("Invalid field: \"$k\"\n")
-	  unless defined $self->{_base_fdata}->{$k};
-    }
-
-}
-
 sub _getstyle {
     my ($self, $row, $cell) = @_;
     $self->_argcheck(defined $cell ? 2 : 1);
     my $stylist = $self->{_base_stylist};
+    return unless $stylist;
 
     return $stylist->($self, $row) unless $cell;
 

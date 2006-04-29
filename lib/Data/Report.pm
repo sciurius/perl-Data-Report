@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Wed Dec 28 13:18:40 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Wed Apr 26 20:48:20 2006
-# Update Count    : 177
+# Last Modified On: Sat Apr 29 18:23:18 2006
+# Update Count    : 179
 # Status          : Unknown, Use with caution!
 
 package Data::Report;
@@ -25,17 +25,23 @@ sub create {
     $plugin =~ s/::::/::/g;
     eval "use $plugin";
 
-    if ( $@ ) {
+    unless ( _loaded($plugin) ) {
 	# Try to load generic plugin.
 	$plugin = __PACKAGE__ . "::Plugins::" . $type;
 	$plugin =~ s/::::/::/g;
 	eval "use $plugin";
     }
-    croak("Unsupported type (Cannot load plug-in for \"$type\")\n$@") if $@;
+    croak("Unsupported type (Cannot load plug-in for \"$type\")\n$@")
+      unless _loaded($plugin);
 
     # Return the plugin instance.
     # The constructor gets all args passed, including 'type'.
     $plugin->new(%args);
 }
 
+sub _loaded {
+    my $class = shift;
+    no strict "refs";
+    %{$class . "::"} ? 1 : 0;
+}
 1;
