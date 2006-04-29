@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Thu Dec 29 15:46:47 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Sat Apr 29 21:23:09 2006
-# Update Count    : 58
+# Last Modified On: Sat Apr 29 21:49:22 2006
+# Update Count    : 65
 # Status          : Unknown, Use with caution!
 
 package Data::Report::Plugin::Html;
@@ -15,15 +15,15 @@ use base qw(Data::Report::Base);
 
 ################ API ################
 
-my $html;
+my $html_use_entities = 0;
 
 sub start {
     my ($self) = @_;
     $self->_argcheck(0);
     eval {
 	require HTML::Entities;
+	$html_use_entities = 1;
     };
-    $html = $@ ? \&__html : \&_html;
     $self->SUPER::start();
     $self->{used} = 0;
 }
@@ -59,7 +59,7 @@ sub add {
 	# No style mods for HTML.
 
 	$self->_print("<td class=\"c_$fname\">",
-		      $value eq "" ? "&nbsp;" : $html->($value),
+		      $value eq "" ? "&nbsp;" : $self->_html($value),
 		      "</td>\n");
     }
 
@@ -78,7 +78,7 @@ sub _std_heading {
     $self->_print("<tr class=\"head\">\n");
     foreach ( @{$self->_get_fields} ) {
 	$self->_print("<th class=\"h_", $_->{name}, "\">",
-		      $html->($_->{title}), "</th>\n");
+		      $self->_html($_->{title}), "</th>\n");
     }
     $self->_print("</tr>\n");
 
@@ -87,10 +87,11 @@ sub _std_heading {
 ################ Internal methods ################
 
 sub _html {
-    HTML::Entities::encode(shift);
-}
+    shift;
+    if ( $html_use_entities ) {
+	return HTML::Entities::encode(shift);
+    }
 
-sub __html {
     my ($t) = @_;
     $t =~ s/&/&amp;/g;
     $t =~ s/</&lt;/g;
