@@ -1,21 +1,19 @@
 Build.PL
 lib/Data/Report.pm
 lib/Data/Report/Base.pm
-lib/Data/Report/Plugins/Csv.pm
-lib/Data/Report/Plugins/Html.pm
-lib/Data/Report/Plugins/Text.pm
+lib/Data/Report/Plugin/Csv.pm
+lib/Data/Report/Plugin/Html.pm
+lib/Data/Report/Plugin/Text.pm
 MANIFEST			This list of files
 README
 t/00basic.t
-t/01text.t
 t/01text01.t
 t/01text02.t
 t/01text03.t
 t/01text04.t
 t/02html01.t
 t/02html02.t
-t/02text.t
 t/03csv01.t
 t/03csv02.t
-t/03text.t
-t/04text.t
+t/09poc01.t
+t/09poc02.t
