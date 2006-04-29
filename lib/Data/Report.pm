@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Wed Dec 28 13:18:40 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Sat Apr 29 18:23:18 2006
-# Update Count    : 179
+# Last Modified On: Sat Apr 29 21:23:31 2006
+# Update Count    : 181
 # Status          : Unknown, Use with caution!
 
 package Data::Report;
@@ -18,7 +18,8 @@ sub create {
 
     # 'type' attribute is mandatory.
     my $type = ucfirst(lc($args{type}));
-    croak("Missing \"type\" attribute") unless $type;
+    #croak("Missing \"type\" attribute") unless $type;
+    $type = "Text" unless $type;
 
     # Try to load class specific plugin.
     my $plugin = $class . "::" . $type;
@@ -27,7 +28,7 @@ sub create {
 
     unless ( _loaded($plugin) ) {
 	# Try to load generic plugin.
-	$plugin = __PACKAGE__ . "::Plugins::" . $type;
+	$plugin = __PACKAGE__ . "::Plugin::" . $type;
 	$plugin =~ s/::::/::/g;
 	eval "use $plugin";
     }
