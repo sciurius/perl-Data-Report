@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Wed Dec 28 13:18:40 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Sat Apr 29 19:05:49 2006
-# Update Count    : 279
+# Last Modified On: Sat Apr 29 21:53:43 2006
+# Update Count    : 287
 # Status          : Unknown, Use with caution!
 
 package Data::Report::Base;
@@ -200,6 +200,7 @@ sub get_widths {
 sub set_output {
     my ($self, $out) = @_;
     $self->_argcheck(1);
+    $self->{_base_close} = sub {};
     if ( ref($out) ) {
 	if ( UNIVERSAL::isa($out, 'SCALAR') ) {
 	    $self->{_base_out} = sub { $$out .= join("", @_) };
@@ -228,7 +229,7 @@ sub set_stylist {
     my ($self, $stylist_code) = @_;
     $self->_argcheck(1);
     croak("Stylist must be a function (code ref)")
-      unless UNIVERSAL::isa($stylist_code, 'CODE');
+      if $stylist_code && !UNIVERSAL::isa($stylist_code, 'CODE');
     $self->{_base_stylist} = $stylist_code;
 }
 
@@ -244,7 +245,7 @@ sub set_heading {
     my ($self, $heading_code) = @_;
     $self->_argcheck(1);
     croak("Header must be a function (code ref)")
-      unless UNIVERSAL::isa($heading_code, 'CODE');
+      if $heading_code && !UNIVERSAL::isa($heading_code, 'CODE');
     $self->{_base_heading} = $heading_code;
 }
 
