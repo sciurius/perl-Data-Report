@@ -1,13 +1,13 @@
-# Data::Report::Plugins::Html.pm -- HTML plugin for Data::Report
+# Data::Report::Plugin::Html.pm -- HTML plugin for Data::Report
 # RCS Info        : $Id$
 # Author          : Johan Vromans
 # Created On      : Thu Dec 29 15:46:47 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Sat Apr 29 16:09:54 2006
-# Update Count    : 57
+# Last Modified On: Sat Apr 29 21:23:09 2006
+# Update Count    : 58
 # Status          : Unknown, Use with caution!
 
-package Data::Report::Plugins::Html;
+package Data::Report::Plugin::Html;
 
 use strict;
 use warnings;

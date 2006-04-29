@@ -1,13 +1,13 @@
-# Data::Report::Plugins::Csv.pm -- CSV plugin for Data::Report
+# Data::Report::Plugin::Csv.pm -- CSV plugin for Data::Report
 # RCS Info        : $Id$
 # Author          : Johan Vromans
 # Created On      : Thu Jan  5 18:47:37 2006
 # Last Modified By: Johan Vromans
-# Last Modified On: Sat Apr 29 16:17:39 2006
-# Update Count    : 33
+# Last Modified On: Sat Apr 29 21:22:59 2006
+# Update Count    : 34
 # Status          : Unknown, Use with caution!
 
-package Data::Report::Plugins::Csv;
+package Data::Report::Plugin::Csv;
 
 use strict;
 use warnings;

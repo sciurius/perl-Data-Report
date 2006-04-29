@@ -1,13 +1,13 @@
-# Data::Report::Text.pm -- Text plugin for Data::Report
+# Data::Report::Plugin::Text.pm -- Text plugin for Data::Report
 # RCS Info        : $Id$
 # Author          : Johan Vromans
 # Created On      : Wed Dec 28 13:21:11 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Sat Apr 29 19:02:29 2006
-# Update Count    : 116
+# Last Modified On: Sat Apr 29 21:23:21 2006
+# Update Count    : 117
 # Status          : Unknown, Use with caution!
 
-package Data::Report::Plugins::Text;
+package Data::Report::Plugin::Text;
 
 use strict;
 use warnings;
