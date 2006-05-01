@@ -1,13 +1,25 @@
-# Data::Reporter.pm -- 
+# Data::Report::Base.pm -- Base class for reporters
 # RCS Info        : $Id$
 # Author          : Johan Vromans
 # Created On      : Wed Dec 28 13:18:40 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Sat Apr 29 21:53:43 2006
-# Update Count    : 287
+# Last Modified On: Mon May  1 16:23:36 2006
+# Update Count    : 297
 # Status          : Unknown, Use with caution!
 
 package Data::Report::Base;
+
+=head1 NAME
+
+Data::Report::Base - Base class for reporter plugins
+
+=head1 SYNOPSIS
+
+This module implements that basic functionality common to all reporters.
+
+Its documentation still has to be written.
+
+=cut
 
 use strict;
 use warnings;
@@ -16,19 +28,19 @@ use Carp;
 ################ User API ################
 
 sub new {
-    my ($class, %args) = @_;
+    my ($class, $args) = @_;
     $class = ref($class) || $class;
 
-    delete($args{type});
-    my $style = delete($args{style}) || "default";
+    delete($args->{type});
+    my $style = delete($args->{style}) || "default";
 
     my $self = bless { _base_fields => [],
 		       _base_fdata  => {},
 		       _base_style  => $style,
 		     }, $class;
 
-    foreach my $arg ( keys(%args) ) {
-	my $val = delete($args{$arg});
+    foreach my $arg ( keys(%$args) ) {
+	my $val = delete($args->{$arg});
 	if ( my $c = $self->can("set_$arg") ) {
 	    $c->($self, $val);
 	}
@@ -68,6 +80,7 @@ sub add {
     croak("Reporter not started") unless $self->{_base_started};
 
     while ( my($k,$v) = each(%$data) ) {
+	next if $k =~ /^_/;
 	croak("Invalid field: \"$k\"\n")
 	  unless defined $self->{_base_fdata}->{$k};
     }
@@ -111,11 +124,12 @@ sub set_layout {
     $self->_argcheck(1);
     foreach my $col ( @$layout ) {
 	if ( $col->{name} ) {
-	    my $a = { name  => $col->{name},
-		      title => $col->{title} || ucfirst(lc(_T($a->{name}))),
-		      width => $col->{width} || length($a->{title}),
-		      align => $col->{align} || "<",
-		      style => $col->{style} || $col->{name},
+	    my $a = { name     => $col->{name},
+		      title    => $col->{title} || ucfirst(lc(_T($a->{name}))),
+		      width    => $col->{width} || length($a->{title}),
+		      align    => $col->{align} || "<",
+		      style    => $col->{style} || $col->{name},
+		      truncate => $col->{truncate},
 		    };
 	    $self->{_base_fdata}->{$a->{name}} = $a;
 	    push(@{$self->{_base_fields}}, $a);
@@ -259,8 +273,7 @@ sub get_heading {
 
 sub _argcheck {
     my ($pkg, $exp) = @_;
-    package DB;
-    my ($package, $filename, $line, $subroutine) = caller(1);
+    my ($package, $filename, $line, $subroutine) = do { package DB; caller(1) };
     my $got = scalar(@DB::args)-1;
     return if $exp == $got;
     $got ||= "none";
