@@ -1,5 +1,7 @@
 Build.PL
+Changes
 lib/Data/Report.pm
+lib/Data/Report/API.pm
 lib/Data/Report/Base.pm
 lib/Data/Report/Plugin/Csv.pm
 lib/Data/Report/Plugin/Html.pm
@@ -17,3 +19,4 @@ t/03csv01.t
 t/03csv02.t
 t/09poc01.t
 t/09poc02.t
+META.yml

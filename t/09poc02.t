@@ -96,31 +96,31 @@ Title_Three_Left&amp;Right</p>
 <th class="h_acct">Acct</th>
 <th class="h_desc">Report</th>
 <th class="h_deb">Debet</th>
-<th class="h_crd">Credit</th>
+<th align="right" class="h_crd">Credit</th>
 </tr>
 <tr class="r_normal">
 <td class="c_acct">one</td>
 <td class="c_desc">two</td>
 <td class="c_deb">three</td>
-<td class="c_crd">four</td>
+<td align="right" class="c_crd">four</td>
 </tr>
 <tr class="r_normal">
 <td class="c_acct">one</td>
 <td class="c_desc">two</td>
 <td class="c_deb">three</td>
-<td class="c_crd">four</td>
+<td align="right" class="c_crd">four</td>
 </tr>
 <tr class="r_normal">
 <td class="c_acct">one</td>
 <td class="c_desc">two</td>
 <td class="c_deb">three</td>
-<td class="c_crd">four</td>
+<td align="right" class="c_crd">four</td>
 </tr>
 <tr class="r_total">
 <td class="c_acct">one</td>
 <td class="c_desc">two</td>
 <td class="c_deb">three</td>
-<td class="c_crd">four</td>
+<td align="right" class="c_crd">four</td>
 </tr>
 </table>
 </body>

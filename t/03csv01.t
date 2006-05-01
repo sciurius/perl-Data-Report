@@ -6,8 +6,6 @@ use Test::More qw(no_plan);
 
 use Data::Report;
 
-chdir("t") if -d "t";
-
 my $rep = Data::Report::->create
   (type => "csv",
    layout => [ { name => "acct", title => "Acct",   width => 6  },

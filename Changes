@@ -1,0 +1,9 @@
+Revision history for Data-Report
+
+0.01    2006-05-01 16:05
+        First version, derived from actual working code of a big application.
+	I turned it into a generic CPAN module. During the process, some features
+	may have become unstable, but that will be cured in time. Also, it is
+	possible that revisions of the API will be necessary when new
+	functionality is added.
+

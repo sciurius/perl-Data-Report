@@ -6,9 +6,8 @@ use Test::More qw(no_plan);
 
 use Data::Report;
 
-chdir("t") if -d "t";
-
 my $data = "01text.out";
+$data = "t/$data" if -d "t";
 
 my $rep = Data::Report::->create
   (type => "text",

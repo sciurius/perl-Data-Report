@@ -10,7 +10,7 @@ use base qw(Data::Report);
 
 package POC::Report::Text;
 
-use base qw(Data::Report::Plugins::Text);
+use base qw(Data::Report::Plugin::Text);
 
 sub _std_heading {
     my $self = shift;

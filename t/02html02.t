@@ -6,8 +6,6 @@ use Test::More qw(no_plan);
 
 use Data::Report;
 
-chdir("t") if -d "t";
-
 my $out = "";
 
 my $rep = Data::Report::->create
@@ -38,18 +36,18 @@ __DATA__
 <th class="h_acct">Acct</th>
 <th class="h_desc">Report</th>
 <th class="h_deb">Debet</th>
-<th class="h_crd">Credit</th>
+<th align="right" class="h_crd">Credit</th>
 </tr>
 <tr>
 <td class="c_acct">one</td>
 <td class="c_desc">two</td>
 <td class="c_deb">three</td>
-<td class="c_crd">four</td>
+<td align="right" class="c_crd">four</td>
 </tr>
 <tr class="r_xyz">
 <td class="c_acct">one</td>
 <td class="c_desc">two</td>
 <td class="c_deb">three</td>
-<td class="c_crd">four</td>
+<td align="right" class="c_crd">four</td>
 </tr>
 </table>
