@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Thu Dec 29 15:46:47 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Sat Apr 29 21:49:22 2006
-# Update Count    : 65
+# Last Modified On: Mon May  1 14:44:03 2006
+# Update Count    : 68
 # Status          : Unknown, Use with caution!
 
 package Data::Report::Plugin::Html;
@@ -58,7 +58,9 @@ sub add {
 	# Examine style mods.
 	# No style mods for HTML.
 
-	$self->_print("<td class=\"c_$fname\">",
+	$self->_print("<td ",
+		      $col->{align} eq ">" ? "align=\"right\" " : "",
+		      "class=\"c_$fname\">",
 		      $value eq "" ? "&nbsp;" : $self->_html($value),
 		      "</td>\n");
     }
@@ -77,7 +79,9 @@ sub _std_heading {
 
     $self->_print("<tr class=\"head\">\n");
     foreach ( @{$self->_get_fields} ) {
-	$self->_print("<th class=\"h_", $_->{name}, "\">",
+	$self->_print("<th ",
+		      $_->{align} eq ">" ? "align=\"right\" " : "",
+		      "class=\"h_", $_->{name}, "\">",
 		      $self->_html($_->{title}), "</th>\n");
     }
     $self->_print("</tr>\n");
