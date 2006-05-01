@@ -330,7 +330,7 @@ Returns the current set of selected columns.
 
 This method defines the width for one or more columns. It takes a hash
 reference with column names and widths. The width may be an absolute
-number, a relative number (to increase/decrease the with, or a
+number, a relative number (to increase/decrease the width, or a
 percentage.
 
 Example:
@@ -343,7 +343,7 @@ Returns a hash with all column names and widths.
 
 =head1 ADVANCED EXAMPLES
 
-This example subclasses Data::Report with an associated pulgin for
+This example subclasses Data::Report with an associated plugin for
 type C<text>. Note the use of overriding C<_std_heading> and
 C<_std_stylist> to provide special defaults for this reporter.
 
@@ -366,8 +366,13 @@ C<_std_stylist> to provide special defaults for this reporter.
   sub _std_stylist {
       my ($rep, $row, $col) = @_;
 
-      return { line_after => 1 }
-	if $row eq "total" && !$col;
+      if ( $col ) {
+	  return { line_after => "=" }
+	    if $row eq "special" && $col =~ /^(deb|crd)$/;
+      }
+      else {
+	  return { line_after => 1 } if $row eq "total";
+      }
       return;
   }
 
@@ -386,10 +391,24 @@ It can be used as follows:
 
   $rep->add({ acct => "one", desc => "two", deb => "three", crd => "four", _style => "normal" });
   $rep->add({ acct => "one", desc => "two", deb => "three", crd => "four", _style => "normal" });
-  $rep->add({ acct => "one", desc => "two", deb => "three", crd => "four", _style => "normal" });
+  $rep->add({ acct => "one", desc => "two", deb => "three", crd => "four", _style => "special"});
   $rep->add({ acct => "one", desc => "two", deb => "three", crd => "four", _style => "total"  });
 
   $rep->finish;
+
+The output will look like:
+
+  Title line 1
+  Title line 2
+
+  Acct                                      Report  Debet           Credit
+  ------------------------------------------------------------------------
+  one                                          two  three             four
+  one                                          two  three             four
+  one                                          two  three             four
+                                                    ==========  ==========
+  one                                          two  three             four
+  ------------------------------------------------------------------------
 
 This is a similar example for a HTML reporter:
 
@@ -436,7 +455,7 @@ The method C<_html> is a convenience method provided by the framework.
 It returns its argument with sensitive characters escaped by HTML
 entities.
 
-It can be used as follows.
+It can be used as follows:
 
   package main;
 
@@ -518,7 +537,7 @@ your bug as I make changes.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2006 Johan Vromans, all rights reserved.
+Copyright 2006 Squirrel Consultancy, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

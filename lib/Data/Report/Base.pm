@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Wed Dec 28 13:18:40 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Mon May  1 16:23:36 2006
-# Update Count    : 297
+# Last Modified On: Mon May  1 21:07:51 2006
+# Update Count    : 298
 # Status          : Unknown, Use with caution!
 
 package Data::Report::Base;
@@ -343,3 +343,24 @@ sub _does_needhdr {
 }
 
 1;
+
+=head1 AUTHOR
+
+Johan Vromans, C<< <jvromans at squirrel.nl> >>
+
+=head1 BUGS
+
+Please report any bugs or feature requests to
+C<bug-data-report at rt.cpan.org>, or through the web interface at
+L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Data-Report>.
+I will be notified, and then you'll automatically be notified of progress on
+your bug as I make changes.
+
+=head1 COPYRIGHT & LICENSE
+
+Copyright 2006 Squirrel Consultancy, all rights reserved.
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+=cut
