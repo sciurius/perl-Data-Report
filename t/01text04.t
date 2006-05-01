@@ -9,7 +9,7 @@ use Data::Report;
 my $rep = Data::Report::->create(type => "text", stylist => \&my_stylist);
 
 $rep->set_layout
-  ([ { name => "acct", title => "Acct",   width => 6  },
+  ([ { name => "acct", title => "Acct",   width => 6, truncate => 1  },
      { name => "desc", title => "Report", width => 40, align => "|" },
      { name => "deb",  title => "Debet",  width => 10, align => "<" },
      { name => "crd",  title => "Credit", width => 10, align => ">" },
@@ -19,7 +19,7 @@ my $out = "";
 $rep->set_output(\$out);
 $rep->set_fields([qw(desc crd deb acct)]);
 $rep->start;
-$rep->add({ acct => "one", desc => "two", deb => "three", crd => "four", _style => "normal" });
+$rep->add({ acct => "one two", desc => "two", deb => "three", crd => "four", _style => "normal" });
 $rep->add({ acct => "one", desc => "two", deb => "three", crd => "four", _style => "normal" });
 $rep->add({ acct => "one", desc => "two", deb => "three", crd => "four", _style => "normal" });
 $rep->add({ acct => "one", desc => "two", deb => "three", crd => "four", _style => "total"  });
@@ -45,7 +45,7 @@ sub my_stylist {
 __DATA__
                                   Report      Credit  Debet       Acct
 ------------------------------------------------------------------------
-                                     two        four  three       one
+                                     two        four  three       one tw
                                                       ----------
                                      two        four  three       one
                                                       ----------
