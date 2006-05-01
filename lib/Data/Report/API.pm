@@ -523,6 +523,8 @@ The output will look like this:
   </body>
   </html>
 
+See also the examples in C<t/09poc*.t>.
+
 =head1 AUTHOR
 
 Johan Vromans, C<< <jvromans at squirrel.nl> >>
