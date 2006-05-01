@@ -24,8 +24,13 @@ sub _std_heading {
 sub _std_stylist {
     my ($rep, $row, $col) = @_;
 
-    return { line_after => 1 }
-      if $row eq "total" && !$col;
+    if ( $col ) {
+	return { line_after => "=" }
+	  if $row eq "special" && $col =~ /^(deb|crd)$/;
+    }
+    else {
+	return { line_after => 1 } if $row eq "total";
+    }
     return;
 }
 
@@ -50,12 +55,12 @@ is($rep->get_heading, \&POC::Report::Text::_std_heading, "CB: heading");
 
 $rep->add({ acct => "one", desc => "two", deb => "three", crd => "four", _style => "normal" });
 $rep->add({ acct => "one", desc => "two", deb => "three", crd => "four", _style => "normal" });
-$rep->add({ acct => "one", desc => "two", deb => "three", crd => "four", _style => "normal" });
+$rep->add({ acct => "one", desc => "two", deb => "three", crd => "four", _style => "special"});
 $rep->add({ acct => "one", desc => "two", deb => "three", crd => "four", _style => "total"  });
 $rep->finish;
 $rep->close;
 
-is($rep->{lines}, $= - 10, "linecount");
+is($rep->{lines}, $= - 11, "linecount");
 
 my $ref; { undef $/; $ref = <DATA>; }
 $ref =~ s/[\r\n]/\n/g;
@@ -71,5 +76,6 @@ Acct                                      Report  Debet           Credit
 one                                          two  three             four
 one                                          two  three             four
 one                                          two  three             four
+                                                  ==========  ==========
 one                                          two  three             four
 ------------------------------------------------------------------------
