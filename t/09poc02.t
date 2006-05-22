@@ -21,7 +21,7 @@ sub start {
     $self->SUPER::start;
 }
 
-sub _std_heading {
+sub _top_heading {
     my $self = shift;
     $self->_print("<html>\n",
 		  "<head>\n",
@@ -32,7 +32,6 @@ sub _std_heading {
 		  "<p class=\"title\">", $self->_html($self->{_title1}), "</p>\n",
 		  "<p class=\"subtitle\">", $self->_html($self->{_title2}), "<br>\n",
 		  $self->_html($self->{_title3}), "</p>\n");
-    $self->SUPER::_std_heading;
 }
 
 sub _std_stylist {
@@ -67,7 +66,7 @@ $rep->set_output(\$out);
 $rep->start(qw(Title_One Title_Two Title_Three_Left&Right));
 
 is($rep->get_stylist, \&POC::Report::Html::_std_stylist, "CB: stylist");
-is($rep->get_heading, \&POC::Report::Html::_std_heading, "CB: heading");
+is($rep->get_topheading, \&POC::Report::Html::_top_heading, "CB: heading");
 
 $rep->add({ acct => "one", desc => "two", deb => "three", crd => "four", _style => "normal" });
 $rep->add({ acct => "one", desc => "two", deb => "three", crd => "four", _style => "normal" });

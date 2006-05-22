@@ -12,13 +12,11 @@ package POC::Report::Text;
 
 use base qw(Data::Report::Plugin::Text);
 
-sub _std_heading {
+sub _top_heading {
     my $self = shift;
     $self->_print("Title line 1\n");
     $self->_print("Title line 2\n");
     $self->_print("\n");
-    $self->SUPER::_std_heading;
-    $self->{lines} -= 3;
 }
 
 sub _std_stylist {
@@ -51,7 +49,7 @@ $rep->set_output(\$out);
 $rep->start;
 
 is($rep->get_stylist, \&POC::Report::Text::_std_stylist, "CB: stylist");
-is($rep->get_heading, \&POC::Report::Text::_std_heading, "CB: heading");
+is($rep->get_topheading, \&POC::Report::Text::_top_heading, "CB: heading");
 
 $rep->add({ acct => "one", desc => "two", deb => "three", crd => "four", _style => "normal" });
 $rep->add({ acct => "one", desc => "two", deb => "three", crd => "four", _style => "normal" });
