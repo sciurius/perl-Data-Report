@@ -13,6 +13,8 @@ t/01text01.t
 t/01text02.t
 t/01text03.t
 t/01text04.t
+t/01text05.t
+t/01text06.t
 t/02html01.t
 t/02html02.t
 t/03csv01.t
@@ -21,3 +23,5 @@ t/03csv03.t
 t/03csv04.t
 t/09poc01.t
 t/09poc02.t
+t/09poc03.t
+t/09poc04.t
