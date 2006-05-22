@@ -30,6 +30,10 @@ my $builder = Module::Build->new(
 	'pod2htm*',
 	map { +"t/*.$_" } qw(out)
     ],
+
+    meta_add            => {
+      no_index          => { package => [ qw(DB) ] },
+    },
 );
 
 $builder->create_build_script;
