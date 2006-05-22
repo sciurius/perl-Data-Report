@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Wed Dec 28 13:18:40 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Mon May 22 18:04:40 2006
-# Update Count    : 306
+# Last Modified On: Mon May 22 19:18:27 2006
+# Update Count    : 307
 # Status          : Unknown, Use with caution!
 
 package Data::Report::Base;
@@ -348,6 +348,7 @@ sub _checkhdr {
     $self->_argcheck(0);
     if ( $self->{_base_needhdr} ) {
 	$self->{_base_needhdr} = 0;
+	$self->_pageskip if $self->can("_pageskip");
 	$self->get_topheading->($self);
 	$self->get_heading->($self);
     }
