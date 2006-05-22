@@ -15,18 +15,37 @@ my $rep = Data::Report::->create
 	     ],
   );
 
-my $out = "";
-$rep->set_output(\$out);
-$rep->start;
-$rep->add({ acct => 1234, desc => "two", deb => "three", crd => "four" });
-$rep->finish;
-$rep->close;
-
 my $ref; { undef $/; $ref = <DATA> }
 $ref =~ s/[\r\n]/\n/g;
-$out =~ s/[\r\n]/\n/g;
-is($out, $ref);
+
+my $out;
+
+SKIP: {
+    skip "Text::CSV_XS not found", 1
+      unless eval { require Text::CSV_XS };
+    dotest(Text::CSV_XS::);
+}
+
+SKIP: {
+    skip "Text::CSV not found", 1
+      unless eval { require Text::CSV };
+    dotest(Text::CSV::);
+}
+
+dotest();
+
+sub dotest {
+    my ($cls) = shift;
+    $out = "";
+    $rep->set_output(\$out);
+    $rep->start;
+    $rep->_set_csv_method($cls);
+    $rep->add({ acct => 1234, desc => "two two", deb => "th,ree", crd => '"four"' });
+    $rep->finish;
+    $out =~ s/[\r\n]/\n/g;
+    is($out, $ref);
+}
 
 __DATA__
 "Acct","Report","Debet","Credit"
-1234,"two","three","four"
+"1234","two two","th,ree","""four"""
