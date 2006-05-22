@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Thu Dec 29 15:46:47 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Mon May  1 14:44:03 2006
-# Update Count    : 68
+# Last Modified On: Sat May  6 21:49:04 2006
+# Update Count    : 73
 # Status          : Unknown, Use with caution!
 
 package Data::Report::Plugin::Html;
@@ -45,6 +45,11 @@ sub add {
     $self->SUPER::add($data);
 
     return unless %$data;
+
+    if ( $style and my $t = $self->_getstyle($style) ) {
+	return if $t->{ignore};
+    }
+
     $self->{used}++;
 
     $self->_checkhdr;
@@ -58,8 +63,7 @@ sub add {
 	# Examine style mods.
 	# No style mods for HTML.
 
-	$self->_print("<td ",
-		      $col->{align} eq ">" ? "align=\"right\" " : "",
+	$self->_print("<td ", _align($col->{align}),
 		      "class=\"c_$fname\">",
 		      $value eq "" ? "&nbsp;" : $self->_html($value),
 		      "</td>\n");
@@ -74,13 +78,11 @@ sub _std_heading {
     my ($self) = @_;
     $self->_argcheck(0);
 
-    $self->_print
-      ("<table class=\"main\">\n");
+    $self->_print("<table class=\"main\">\n");
 
     $self->_print("<tr class=\"head\">\n");
     foreach ( @{$self->_get_fields} ) {
-	$self->_print("<th ",
-		      $_->{align} eq ">" ? "align=\"right\" " : "",
+	$self->_print("<th ", _align($_->{align}),
 		      "class=\"h_", $_->{name}, "\">",
 		      $self->_html($_->{title}), "</th>\n");
     }
@@ -89,6 +91,13 @@ sub _std_heading {
 }
 
 ################ Internal methods ################
+
+sub _align {
+    return 'align="right" '  if $_[0] eq '>';
+    return 'align="left" '   if $_[0] eq '<';
+    return 'align="center" ' if $_[0] eq '|';
+    ""
+}
 
 sub _html {
     shift;
