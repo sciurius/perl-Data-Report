@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Thu Jan  5 18:47:37 2006
 # Last Modified By: Johan Vromans
-# Last Modified On: Sat Apr 29 21:22:59 2006
-# Update Count    : 34
+# Last Modified On: Sat May  6 15:00:22 2006
+# Update Count    : 35
 # Status          : Unknown, Use with caution!
 
 package Data::Report::Plugin::Csv;
@@ -36,6 +36,10 @@ sub add {
     $self->SUPER::add($data);
 
     return unless %$data;
+
+    if ( $style and my $t = $self->_getstyle($style) ) {
+	return if $t->{ignore};
+    }
 
     $self->_checkhdr;
 

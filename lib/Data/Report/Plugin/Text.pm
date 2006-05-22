@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Wed Dec 28 13:21:11 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Mon May  1 14:34:06 2006
-# Update Count    : 118
+# Last Modified On: Sat May  6 14:58:50 2006
+# Update Count    : 119
 # Status          : Unknown, Use with caution!
 
 package Data::Report::Plugin::Text;
@@ -38,6 +38,7 @@ sub add {
     my $line_after = 0;
     my $cancel_skip = 0;
     if ( $style and my $t = $self->_getstyle($style) ) {
+	return	     if $t->{ignore};
 	$self->_skip if $t->{skip_before};
 	$skip_after   = $t->{skip_after};
 	$self->_line if $t->{line_before};
