@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Wed Dec 28 13:18:40 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Sat May  6 21:41:02 2006
-# Update Count    : 301
+# Last Modified On: Mon May 22 18:04:40 2006
+# Update Count    : 306
 # Status          : Unknown, Use with caution!
 
 package Data::Report::Base;
@@ -66,6 +66,8 @@ sub start {
 
     $self->set_output(*STDOUT) unless $self->{_base_out};
     $self->set_style("default") unless $self->{_base_style};
+    $self->set_topheading($self->can("_top_heading"))
+      unless $self->{_base_topheading};
     $self->set_heading($self->can("_std_heading"))
       unless $self->{_base_heading};
     $self->set_stylist($self->can("_std_stylist"))
@@ -274,6 +276,20 @@ sub get_heading {
     $self->{_base_heading};
 }
 
+sub set_topheading {
+    my ($self, $heading_code) = @_;
+    $self->_argcheck(1);
+    croak("Header must be a function (code ref)")
+      if $heading_code && !UNIVERSAL::isa($heading_code, 'CODE');
+    $self->{_base_topheading} = $heading_code;
+}
+
+sub get_topheading {
+    my ($self) = @_;
+    $self->_argcheck(0);
+    $self->{_base_topheading} || sub {};
+}
+
 ################ Friend methods ################
 
 sub _argcheck {
@@ -332,6 +348,7 @@ sub _checkhdr {
     $self->_argcheck(0);
     if ( $self->{_base_needhdr} ) {
 	$self->{_base_needhdr} = 0;
+	$self->get_topheading->($self);
 	$self->get_heading->($self);
     }
 }
