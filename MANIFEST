@@ -1,12 +1,12 @@
 Build.PL
 Changes
 lib/Data/Report.pm
-lib/Data/Report/API.pm
 lib/Data/Report/Base.pm
 lib/Data/Report/Plugin/Csv.pm
 lib/Data/Report/Plugin/Html.pm
 lib/Data/Report/Plugin/Text.pm
 MANIFEST			This list of files
+META.yml
 README
 t/00basic.t
 t/01text01.t
@@ -17,6 +17,7 @@ t/02html01.t
 t/02html02.t
 t/03csv01.t
 t/03csv02.t
+t/03csv03.t
+t/03csv04.t
 t/09poc01.t
 t/09poc02.t
-META.yml
