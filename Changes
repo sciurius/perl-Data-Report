@@ -1,6 +1,23 @@
 Revision history for Data-Report
 
+0.03	 2006-05-22 22:03
+
+	Integrate API docs into Data::Report.
+	Add get_type method.
+	Add topheading attribute. Eliminates most needs for
+	$rep->set_heading.
+	Row attribute 'ignore'.
+	Column attribute 'wrap_indent'.
+	Handle alignment < > | in HTML.
+	CSV plugin will use Text::CSV_XS or Text::CSV if installed.
+
+0.02	2006-05-01 23:08
+
+	Small documentation fixes.
+	Prevent DB from being attempted by the CPAN indexer.
+
 0.01    2006-05-01 16:05
+
         First version, derived from actual working code of a big application.
 	I turned it into a generic CPAN module. During the process, some features
 	may have become unstable, but that will be cured in time. Also, it is
