@@ -18,7 +18,6 @@ sub _std_heading {
     $self->_print("Title line 2\n");
     $self->_print("\n");
     $self->SUPER::_std_heading;
-    $self->{lines} -= 3;
 }
 
 sub _std_stylist {
