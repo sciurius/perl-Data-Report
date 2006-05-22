@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Wed Dec 28 13:18:40 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Mon May 22 15:25:50 2006
-# Update Count    : 223
+# Last Modified On: Mon May 22 18:23:25 2006
+# Update Count    : 229
 # Status          : Unknown, Use with caution!
 
 package Data::Report;
@@ -403,10 +403,36 @@ C<set_stylist>.
 
 Returns the current stylist, if any.
 
+=head2 set_topheading
+
+This method can be used to designate a subroutine that provides the
+top part of the heading of the report.
+
+Example:
+
+  $rpt->set_topheading(sub {
+    my $self = shift;
+    $self->_print("Title line 1\n");
+    $self->_print("Title line 2\n");
+    $self->_print("\n");
+  });
+
+Note the use of the reporter provided C<_print> method to produce output.
+
+When subclassing a reporter, overriding C<_top_heading> is equivalent
+to using C<set_topheading>.
+
+=head2 get_topheading
+
+Returns the current top heading routine, if any.
+
 =head2 set_heading
 
 This method can be used to designate a subroutine that provides the
-heading of the report.
+standard part of the heading of the report.
+
+In normal cases using this method is not necessary, since setting the
+top header will be sufficient.
 
 Each reporter plugin provides a standard heading, implemented in a
 method called C<_std_header>. This is the default value for the
@@ -414,7 +440,7 @@ C<heading> attribute. A user-defined heading can use
 
   $self->SUPER::_std_header;
 
-to still get the original heading produced.
+to still get the original standard heading produced.
 
 Example:
 
@@ -479,12 +505,11 @@ C<_std_stylist> to provide special defaults for this reporter.
 
   use base qw(Data::Report::Plugin::Text);
 
-  sub _std_heading {
+  sub _top_heading {
       my $self = shift;
       $self->_print("Title line 1\n");
       $self->_print("Title line 2\n");
       $self->_print("\n");
-      $self->SUPER::_std_heading;
   }
 
   sub _std_stylist {
@@ -552,7 +577,7 @@ This is a similar example for a HTML reporter:
       $self->SUPER::start;
   }
 
-  sub _std_heading {
+  sub _top_heading {
       my $self = shift;
       $self->_print("<html>\n",
 		    "<head>\n",
@@ -563,7 +588,6 @@ This is a similar example for a HTML reporter:
 		    "<p class=\"title\">", $self->_html($self->{_title1}), "</p>\n",
 		    "<p class=\"subtitle\">", $self->_html($self->{_title2}), "<br>\n",
 		    $self->_html($self->{_title3}), "</p>\n");
-      $self->SUPER::_std_heading;
   }
 
   sub finish {
