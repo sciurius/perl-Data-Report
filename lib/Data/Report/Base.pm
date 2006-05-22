@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Wed Dec 28 13:18:40 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Mon May  1 21:07:51 2006
-# Update Count    : 298
+# Last Modified On: Sat May  6 21:41:02 2006
+# Update Count    : 301
 # Status          : Unknown, Use with caution!
 
 package Data::Report::Base;
@@ -31,10 +31,11 @@ sub new {
     my ($class, $args) = @_;
     $class = ref($class) || $class;
 
-    delete($args->{type});
+    my $type = delete($args->{type});
     my $style = delete($args->{style}) || "default";
 
-    my $self = bless { _base_fields => [],
+    my $self = bless { _base_type   => lc($type),
+		       _base_fields => [],
 		       _base_fdata  => {},
 		       _base_style  => $style,
 		     }, $class;
@@ -102,6 +103,10 @@ sub close {
 }
 
 ################ Attributes ################
+
+#### Type
+
+sub get_type { shift->{_base_type} }
 
 #### Style
 
