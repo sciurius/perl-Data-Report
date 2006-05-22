@@ -10,3 +10,4 @@ BEGIN { use_ok('Data::Report::Plugin::Text'); }
 BEGIN { use_ok('Data::Report::Plugin::Html'); }
 BEGIN { use_ok('Data::Report::Plugin::Csv' ); }
 
+diag("CSV uses ", Data::Report::Plugin::Csv->new->_select_csv_method, "\n");
