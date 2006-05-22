@@ -93,33 +93,33 @@ __DATA__
 Title_Three_Left&amp;Right</p>
 <table class="main">
 <tr class="head">
-<th class="h_acct">Acct</th>
-<th class="h_desc">Report</th>
-<th class="h_deb">Debet</th>
+<th align="left" class="h_acct">Acct</th>
+<th align="center" class="h_desc">Report</th>
+<th align="left" class="h_deb">Debet</th>
 <th align="right" class="h_crd">Credit</th>
 </tr>
 <tr class="r_normal">
-<td class="c_acct">one</td>
-<td class="c_desc">two</td>
-<td class="c_deb">three</td>
+<td align="left" class="c_acct">one</td>
+<td align="center" class="c_desc">two</td>
+<td align="left" class="c_deb">three</td>
 <td align="right" class="c_crd">four</td>
 </tr>
 <tr class="r_normal">
-<td class="c_acct">one</td>
-<td class="c_desc">two</td>
-<td class="c_deb">three</td>
+<td align="left" class="c_acct">one</td>
+<td align="center" class="c_desc">two</td>
+<td align="left" class="c_deb">three</td>
 <td align="right" class="c_crd">four</td>
 </tr>
 <tr class="r_normal">
-<td class="c_acct">one</td>
-<td class="c_desc">two</td>
-<td class="c_deb">three</td>
+<td align="left" class="c_acct">one</td>
+<td align="center" class="c_desc">two</td>
+<td align="left" class="c_deb">three</td>
 <td align="right" class="c_crd">four</td>
 </tr>
 <tr class="r_total">
-<td class="c_acct">one</td>
-<td class="c_desc">two</td>
-<td class="c_deb">three</td>
+<td align="left" class="c_acct">one</td>
+<td align="center" class="c_desc">two</td>
+<td align="left" class="c_deb">three</td>
 <td align="right" class="c_crd">four</td>
 </tr>
 </table>
