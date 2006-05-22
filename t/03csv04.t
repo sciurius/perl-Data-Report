@@ -38,6 +38,6 @@ is($out, $ref);
 
 __DATA__
 "Acct":"Report":"Debet":"Credit"
-1234:"two":"three":"four"
-1235:"two":"three":"four"
-1236:"two":"three":"four"
+"1234":"two":"three":"four"
+"1235":"two":"three":"four"
+"1236":"two":"three":"four"
