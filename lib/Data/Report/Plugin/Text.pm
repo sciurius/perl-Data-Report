@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Wed Dec 28 13:21:11 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Mon May 22 21:46:45 2006
-# Update Count    : 135
+# Last Modified On: Tue May 23 10:42:34 2006
+# Update Count    : 136
 # Status          : Unknown, Use with caution!
 
 package Data::Report::Plugin::Text;
@@ -45,7 +45,7 @@ sub add {
 	$line_after   = $t->{line_after};
 	$cancel_skip  = $t->{cancel_skip};
     }
-
+    $style ||= "*";
     $self->_checkskip($cancel_skip);
 
     my @values;
