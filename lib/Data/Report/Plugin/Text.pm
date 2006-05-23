@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Wed Dec 28 13:21:11 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Tue May 23 10:42:34 2006
-# Update Count    : 136
+# Last Modified On: Tue May 23 11:23:52 2006
+# Update Count    : 141
 # Status          : Unknown, Use with caution!
 
 package Data::Report::Plugin::Text;
@@ -29,7 +29,9 @@ sub add {
     my ($self, $data) = @_;
 
     my $style = delete($data->{_style});
-
+    if ( $style && !$self->_checkname($style) ) {
+	croak("Invalid style name: \"$style\"");
+    }
     $self->SUPER::add($data);
 
     $self->_checkhdr;
@@ -45,7 +47,7 @@ sub add {
 	$line_after   = $t->{line_after};
 	$cancel_skip  = $t->{cancel_skip};
     }
-    $style ||= "*";
+    $style = "*" unless defined($style);
     $self->_checkskip($cancel_skip);
 
     my @values;
@@ -97,6 +99,7 @@ sub add {
     }
 
     if ( $linebefore ) {
+	$linebefore->{_style} = "";
 	$self->add($linebefore);
     }
 
@@ -145,6 +148,7 @@ sub add {
 
     # Post: Lines for cells.
     if ( $lineafter ) {
+	$lineafter->{_style} = "";
 	$self->add($lineafter);
     }
     # Post: Line for row.
