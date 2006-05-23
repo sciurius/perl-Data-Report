@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Wed Dec 28 13:18:40 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Mon May 22 19:18:27 2006
-# Update Count    : 307
+# Last Modified On: Tue May 23 10:56:43 2006
+# Update Count    : 316
 # Status          : Unknown, Use with caution!
 
 package Data::Report::Base;
@@ -25,6 +25,8 @@ use strict;
 use warnings;
 use Carp;
 
+my $style_pat = qr/^[a-zA-Z]\w*$/;
+
 ################ User API ################
 
 sub new {
@@ -33,13 +35,14 @@ sub new {
 
     my $type = delete($args->{type});
     my $style = delete($args->{style}) || "default";
-
     my $self = bless { _base_type   => lc($type),
 		       _base_fields => [],
 		       _base_fdata  => {},
 		       _base_style  => $style,
 		     }, $class;
 
+    $self->_checkname($style)
+      or croak("Invalid style name: \"$style\"");
     foreach my $arg ( keys(%$args) ) {
 	my $val = delete($args->{$arg});
 	if ( my $c = $self->can("set_$arg") ) {
@@ -115,6 +118,8 @@ sub get_type { shift->{_base_type} }
 sub set_style {
     my ($self, $style) = @_;
     $self->_argcheck(1);
+    $self->_checkname($style)
+      or croak("Invalid style name: \"$style\"");
     $self->{_base_style} = $style;
 }
 
@@ -131,6 +136,8 @@ sub set_layout {
     $self->_argcheck(1);
     foreach my $col ( @$layout ) {
 	if ( $col->{name} ) {
+	    $self->_checkname($col->{name})
+	      or croak("Invalid column name: \"$col->{name}\"");
 	    my $a = { name     => $col->{name},
 		      title    => $col->{title} || ucfirst(lc(_T($a->{name}))),
 		      width    => $col->{width} || length($a->{title}),
@@ -138,11 +145,13 @@ sub set_layout {
 		      style    => $col->{style} || $col->{name},
 		      truncate => $col->{truncate},
 		    };
+	    $self->_checkname($a->{style})
+	      or croak("Invalid column style: \"$a->{style}\"");
 	    $self->{_base_fdata}->{$a->{name}} = $a;
 	    push(@{$self->{_base_fields}}, $a);
 	}
 	else {
-	    croak("Missing \"name\" of \"style\"\n");
+	    croak("Missing column name in layout\n");
 	}
     }
 
@@ -363,6 +372,12 @@ sub _does_needhdr {
     my $self = shift;
     $self->_argcheck(0);
     $self->{_base_needhdr};
+}
+
+sub _checkname {
+    my $self = shift;
+    $self->_argcheck(1);
+    shift =~ $style_pat;
 }
 
 1;
