@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Wed Dec 28 13:18:40 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Mon May 22 22:04:45 2006
-# Update Count    : 231
+# Last Modified On: Tue May 23 11:31:49 2006
+# Update Count    : 240
 # Status          : Unknown, Use with caution!
 
 package Data::Report;
@@ -37,7 +37,10 @@ $VERSION = 0.04;
 
 =head1 DESCRIPTION
 
-Data::Report is a flexible, plugin-driven reporting framework.
+Data::Report is a flexible, plugin-driven reporting framework. It
+makes it easy to define reports that can be produced in text, HTML and
+CSV. Textual ornaments like extra empty lines, dashed lines, and cell
+lines can be added in a way similar to HTML style sheets.
 
 The Data::Report framework consists of three parts:
 
@@ -181,6 +184,8 @@ key C<_style> to designate a particular style for this entry. What
 that means depends on the plugin that implements this reporter. For
 example, the standard HTML reporter plugin prefixes the given style
 with C<r_> to form the class name for the row.
+The style name should be a simple name, containing letters, digits and
+underscores, starting with a letter.
 
 Example
 
@@ -226,7 +231,7 @@ The following keys are possible in the hash reference:
 =item C<name>
 
 The name of this column. The name should be a simple name, containing
-letters, digits and underscores, not starting with an underscore.
+letters, digits and underscores, starting with a letter.
 
 The standard HTML reporter plugin uses the column name to form a class
 name for each cell by prefixing with C<c_>. Likewise, the classes for
@@ -264,6 +269,9 @@ Relevant for textual reporters only.
 This method can be used to set an arbitrary style (a string) whose
 meaning depends on the implementing plugin. For example, a HTML plugin
 could use this as the name of the style sheet to use.
+
+The name should be a simple name, containing letters, digits and
+underscores, starting with a letter.
 
 =head2 get_style
 
@@ -322,7 +330,8 @@ properties for the given row/column (cell).
 All appropriate properties are merged to form the final set of
 properties to apply.
 
-Currently, layout properties are only supported by the textual reporter.
+Currently, layout properties are mostly only supported by the textual
+reporter.
 
 The following row properties are recognised:
 
@@ -409,8 +418,13 @@ Returns the current stylist, if any.
 
 =head2 set_topheading
 
-This method can be used to designate a subroutine that provides the
-top part of the heading of the report.
+Headings consist of two parts, the I<top heading>, and the I<standard
+heading>. Bij default, the top heading is empty, and the standard
+heading has the names of the columns with a separator line (depnendent
+on the plugin used).
+
+This method can be used to designate a subroutine that will provide
+the top heading of the report.
 
 Example:
 
@@ -423,8 +437,10 @@ Example:
 
 Note the use of the reporter provided C<_print> method to produce output.
 
-When subclassing a reporter, overriding C<_top_heading> is equivalent
-to using C<set_topheading>.
+When subclassing a reporter, a method C<_top_heading> can be defined
+to provide the top heading. This is equivalent to an explicit call to
+C<set_topheading>, but doesn't need to be repeatedly and explicitly
+executed for each new reporter.
 
 =head2 get_topheading
 
@@ -433,10 +449,10 @@ Returns the current top heading routine, if any.
 =head2 set_heading
 
 This method can be used to designate a subroutine that provides the
-standard part of the heading of the report.
+standard heading of the report.
 
 In normal cases using this method is not necessary, since setting the
-top header will be sufficient.
+top heading will be sufficient.
 
 Each reporter plugin provides a standard heading, implemented in a
 method called C<_std_header>. This is the default value for the
@@ -454,17 +470,19 @@ Example:
     $self->_print("Title line 2\n");
     $self->_print("\n");
     $self->SUPER::_std_heading;
+    $self->_print("\n");
   });
 
 Note the use of the reporter provided C<_print> method to produce output.
 
-Overriding C<_std_heading> is equivalent to using C<set_heading>. When
-subclassing a reporter it is possible to override C<_std_heading> and
-still be able to use the SUPER.
+When subclassing a reporter, the method C<_std_heading> can be
+overridden to provide a customized top heading. This is equivalent to
+an explicit call to C<set_topheading>, but doesn't need to be
+repeatedly and explicitly executed for each new reporter.
 
 =head2 get_heading
 
-Returns the current heading routine, if any.
+Returns the current standard heading routine, if any.
 
 =head2 set_fields
 
@@ -498,7 +516,7 @@ Returns a hash with all column names and widths.
 =head1 ADVANCED EXAMPLES
 
 This example subclasses Data::Report with an associated plugin for
-type C<text>. Note the use of overriding C<_std_heading> and
+type C<text>. Note the use of overriding C<_top_heading> and
 C<_std_stylist> to provide special defaults for this reporter.
 
   package POC::Report;
