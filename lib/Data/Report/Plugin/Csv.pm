@@ -86,7 +86,7 @@ sub _set_csv_method {
     my ($self, $class) = @_;
     no warnings qw(redefine);
 
-    if ( $class && $class =~ /^Text::CSV_XS(?:::)?$/ ) {
+    if ( $class && $class->isa("Text::CSV_XS") ) {
 
 	# Use always_quote to be compatible with Text::CSV.
 	$csv_implementation = Text::CSV_XS->new
@@ -101,7 +101,7 @@ sub _set_csv_method {
 	    $csv_implementation->string;
 	};
     }
-    elsif ( $class && $class =~ /^Text::CSV(?:::)?$/ ) {
+    elsif ( $class && $class->isa("Text::CSV") ) {
 
 	$csv_implementation = Text::CSV->new;
 
