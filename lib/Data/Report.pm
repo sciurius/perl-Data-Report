@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Wed Dec 28 13:18:40 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Tue May 23 11:31:49 2006
-# Update Count    : 240
+# Last Modified On: Thu Jun  8 15:34:00 2006
+# Update Count    : 246
 # Status          : Unknown, Use with caution!
 
 package Data::Report;
@@ -15,25 +15,36 @@ Data::Report - Framework for flexible reporting
 
 =head1 VERSION
 
-0.04
+0.05
 
 =cut
 
-$VERSION = 0.04;
+$VERSION = 0.05;
 
 =head1 SYNOPSIS
 
-    use Data::Report;
+  # Create a new reporter.
+  my $rep = POC::Report::->create(type => "text"); # or "html", or "csv", ...
 
-    # Factory call to create a reporter.
-    my $rpt = Data::Report->create;
+  # Define the layout.
+  $rep->set_layout
+    ([ { name => "acct", title => "Acct",        width => 6  },
+       { name => "desc", title => "Description", width => 40, align => "<" },
+       { name => "deb",  title => "Debet",       width => 10, align => ">" },
+       { name => "crd",  title => "Credit",      width => 10, align => ">" },
+     ]);
 
-    # User API calls.
-    $rpt->set_layout(...);   # define layout
-    $rpt->start;	     # start the reporter
-    $rpt->add(...);          # add a row of data
-    $rpt->add(...);          # add a row of data
-    $rpt->finish;            # finish the reporter
+  # Start the reporter.
+  $rep->start;
+
+  # Add data, row by row.
+  $rep->add({ acct => 1234, desc => "Received", deb => "242.33"                  });
+  $rep->add({ acct => 5678, desc => "Paid",                      crd => "699.45" });
+  $rep->add({ acct => 1259, desc => "Taxes",    deb =>  "12.00", crd => "244.00" });
+  $rep->add({               desc => "TOTAL",    deb => "254.33", crd => "943.45" });
+
+  # Finish the reporter.
+  $rep->finish;
 
 =head1 DESCRIPTION
 
@@ -660,34 +671,34 @@ The output will look like this:
   Title_Three_Left&amp;Right</p>
   <table class="main">
   <tr class="head">
-  <th class="h_acct">Acct</th>
-  <th class="h_desc">Report</th>
-  <th class="h_deb">Debet</th>
-  <th class="h_crd">Credit</th>
+  <th align="left" class="h_acct">Acct</th>
+  <th align="left" class="h_desc">Report</th>
+  <th align="right" class="h_deb">Debet</th>
+  <th align="right" class="h_crd">Credit</th>
   </tr>
   <tr class="r_normal">
-  <td class="c_acct">one</td>
-  <td class="c_desc">two</td>
-  <td class="c_deb">three</td>
-  <td class="c_crd">four</td>
+  <td align="left" class="c_acct">one</td>
+  <td align="left" class="c_desc">two</td>
+  <td align="right" class="c_deb">three</td>
+  <td align="right" class="c_crd">four</td>
   </tr>
   <tr class="r_normal">
-  <td class="c_acct">one</td>
-  <td class="c_desc">two</td>
-  <td class="c_deb">three</td>
-  <td class="c_crd">four</td>
+  <td align="left" class="c_acct">one</td>
+  <td align="left" class="c_desc">two</td>
+  <td align="right" class="c_deb">three</td>
+  <td align="right" class="c_crd">four</td>
   </tr>
   <tr class="r_normal">
-  <td class="c_acct">one</td>
-  <td class="c_desc">two</td>
-  <td class="c_deb">three</td>
-  <td class="c_crd">four</td>
+  <td align="left" class="c_acct">one</td>
+  <td align="left" class="c_desc">two</td>
+  <td align="right" class="c_deb">three</td>
+  <td align="right" class="c_crd">four</td>
   </tr>
   <tr class="r_total">
-  <td class="c_acct">one</td>
-  <td class="c_desc">two</td>
-  <td class="c_deb">three</td>
-  <td class="c_crd">four</td>
+  <td align="left" class="c_acct">one</td>
+  <td align="left" class="c_desc">two</td>
+  <td align="right" class="c_deb">three</td>
+  <td align="right" class="c_crd">four</td>
   </tr>
   </table>
   </body>
