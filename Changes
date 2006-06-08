@@ -1,6 +1,19 @@
 Revision history for Data-Report
 
-0.03	 2006-05-22 22:03
+0.05	2006-06-08 15:46
+
+	Better SYNOPSIS + doc fixes.
+
+0.04	2006-06-08 15:20
+
+	Under debian linux, Text::CSV seems to be a wrapper for
+	Text::CSV_XS which caused test t/03csv02.t to fail.
+
+	Under perl 5.6, output was written to a file '*main::STDOUT',
+        since in older perls refering to a filehandle glob needs an
+        additional \.
+
+0.03	2006-05-22 22:03
 
 	Integrate API docs into Data::Report.
 	Add get_type method.
@@ -18,9 +31,9 @@ Revision history for Data-Report
 
 0.01    2006-05-01 16:05
 
-        First version, derived from actual working code of a big application.
-	I turned it into a generic CPAN module. During the process, some features
-	may have become unstable, but that will be cured in time. Also, it is
-	possible that revisions of the API will be necessary when new
-	functionality is added.
+        First version, derived from actual working code of a big
+	application. I turned it into a generic CPAN module. During
+	the process, some features may have become unstable, but that
+	will be cured in time. Also, it is possible that revisions of
+	the API will be necessary when new functionality is added.
 
