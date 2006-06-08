@@ -1,5 +1,20 @@
 #! perl
 
+################################################################
+####                                                        ####
+####        BIG FAT WARNING         BIG FAT WARNING         ####
+####                                                        ####
+################################################################
+####
+#### This test is for the Data::Report internals only. It contains
+#### trickery that is not suitable for end users. Please do not attempt
+#### to borrow any of these tricks.
+####
+#### In particular, the method _set_csv_method exists only for this
+#### test and should never be used for other purposes. You have been
+#### warned.
+
+
 use strict;
 use warnings;
 use Test::More qw(no_plan);
