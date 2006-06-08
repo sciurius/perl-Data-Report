@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Wed Dec 28 13:18:40 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Tue May 23 10:56:43 2006
-# Update Count    : 316
+# Last Modified On: Tue Jun  6 22:13:56 2006
+# Update Count    : 317
 # Status          : Unknown, Use with caution!
 
 package Data::Report::Base;
@@ -67,7 +67,7 @@ sub start {
     $self->{_base_needhdr} = 1;
     $self->{_base_needskip} = 0;
 
-    $self->set_output(*STDOUT) unless $self->{_base_out};
+    $self->set_output(\*STDOUT) unless $self->{_base_out};
     $self->set_style("default") unless $self->{_base_style};
     $self->set_topheading($self->can("_top_heading"))
       unless $self->{_base_topheading};
