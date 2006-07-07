@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Wed Dec 28 13:18:40 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Thu Jun  8 15:34:00 2006
-# Update Count    : 246
+# Last Modified On: Fri Jul  7 11:44:10 2006
+# Update Count    : 247
 # Status          : Unknown, Use with caution!
 
 package Data::Report;
@@ -24,7 +24,7 @@ $VERSION = 0.05;
 =head1 SYNOPSIS
 
   # Create a new reporter.
-  my $rep = POC::Report::->create(type => "text"); # or "html", or "csv", ...
+  my $rep = Data::Report::->create(type => "text"); # or "html", or "csv", ...
 
   # Define the layout.
   $rep->set_layout
