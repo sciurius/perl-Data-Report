@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Wed Dec 28 13:18:40 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Fri Jul  7 11:44:10 2006
-# Update Count    : 247
+# Last Modified On: Tue Sep 19 14:19:46 2006
+# Update Count    : 249
 # Status          : Unknown, Use with caution!
 
 package Data::Report;
@@ -15,13 +15,15 @@ Data::Report - Framework for flexible reporting
 
 =head1 VERSION
 
-0.05
+0.06
 
 =cut
 
-$VERSION = 0.05;
+$VERSION = 0.06;
 
 =head1 SYNOPSIS
+
+  use Data::Report;
 
   # Create a new reporter.
   my $rep = Data::Report::->create(type => "text"); # or "html", or "csv", ...
