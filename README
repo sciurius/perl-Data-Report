@@ -29,15 +29,12 @@ You can also look for information at:
     CPAN Request Tracker:
         http://rt.cpan.org/NoAuth/Bugs.html?Dist=Data-Report
 
-    AnnoCPAN, annotated CPAN documentation:
-        http://annocpan.org/dist/Data-Report
-
     CPAN Ratings:
         http://cpanratings.perl.org/d/Data-Report
 
 COPYRIGHT AND LICENCE
 
-Copyright 2006 Squirrel Consultancy, all rights reserved.
+Copyright 2006,2008 Squirrel Consultancy, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
