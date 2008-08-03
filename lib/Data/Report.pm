@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Wed Dec 28 13:18:40 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Tue Sep 19 14:19:46 2006
-# Update Count    : 249
+# Last Modified On: Sun Aug  3 16:23:30 2008
+# Update Count    : 256
 # Status          : Unknown, Use with caution!
 
 package Data::Report;
@@ -15,11 +15,11 @@ Data::Report - Framework for flexible reporting
 
 =head1 VERSION
 
-0.06
+0.07
 
 =cut
 
-$VERSION = 0.06;
+$VERSION = 0.07;
 
 =head1 SYNOPSIS
 
@@ -343,68 +343,72 @@ properties for the given row/column (cell).
 All appropriate properties are merged to form the final set of
 properties to apply.
 
-Currently, layout properties are mostly only supported by the textual
-reporter.
-
-The following row properties are recognised:
+The following row properties are recognised. Between parentheses the
+backends that support them.
 
 =over 4
 
 =item C<skip_before>
 
-Produce an empty line before printing the current row.
+(Text) Produce an empty line before printing the current row.
 
 =item C<skip_after>
 
-Produce an empty line after printing the current row, but only if
+(Text) Produce an empty line after printing the current row, but only if
 other data follows.
 
 =item C<line_before>
 
-Draw a line of dashes before printing the current row.
+(Text) Draw a line of dashes before printing the current row.
 
 =item C<line_after>
 
-Draw a line of dashes after printing the current row.
+(Text) Draw a line of dashes after printing the current row.
 
 =item C<cancel_skip>
 
-Cancel the effect of a pending C<skip_after>
+(Text) Cancel the effect of a pending C<skip_after>
 
 =item C<ignore>
 
-Ignore this row. Useful for CSV backends where only the raw data
+(All) Ignore this row. Useful for CSV backends where only the raw data
 matters, and not the totals and such.
 
 =back
 
-The following cell properties are recognised:
+The following cell properties are recognised. Between parentheses the
+backends that support them.
 
 =over 4
 
 =item C<indent>
 
-Indent the contents of this cell with the given amount.
+(Text) Indent the contents of this cell with the given amount.
 
 =item C<wrap_indent>
 
-Indent wrapped contents of this cell with the given amount.
+(Text) Indent wrapped contents of this cell with the given amount.
 
 =item C<truncate>
 
-If true, truncate the contents of this cell to fit the column width.
+(Text) If true, truncate the contents of this cell to fit the column width.
 
 =item C<line_before>
 
-Draw a line in the cell before printing the current row. The value of
+(Text) Draw a line in the cell before printing the current row. The value of
 this property indicates the symbol to use to draw the line. If it is
 C<1>, dashes are used.
 
 =item C<line_after>
 
-Draw a line in the cell after printing the current row. The value of
+(Text) Draw a line in the cell after printing the current row. The value of
 this property indicates the symbol to use to draw the line. If it is
 C<1>, dashes are used.
+
+=item C<raw_html>
+
+(Html) Do not escape special HTML characters, allowing pre-prepared
+HTML code to be placed in the output. Use with care.
 
 =back
 
@@ -737,17 +741,13 @@ You can also look for information at:
 
 =over 4
 
-=item * AnnoCPAN: Annotated CPAN documentation
+=item * RT: CPAN's request tracker
 
-L<http://annocpan.org/dist/Data-Report>
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Data-Report>
 
 =item * CPAN Ratings
 
 L<http://cpanratings.perl.org/d/Data-Report>
-
-=item * RT: CPAN's request tracker
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Data-Report>
 
 =item * Search CPAN
 
@@ -759,7 +759,7 @@ L<http://search.cpan.org/dist/Data-Report>
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2006 Squirrel Consultancy, all rights reserved.
+Copyright 2006,2008 Squirrel Consultancy, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
