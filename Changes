@@ -1,10 +1,18 @@
 Revision history for Data-Report
 
-0.07	2008-08-03
+0.08	2008-08-06
+
+	Allow handling of Latin texts with CSV plugin and Text::CSV_XS.
+
+	This change was suggested by Mário Silva.
+
+0.07	2008-08-03 16:26
 
 	Add 'raw_html' style mod for HTML plugin. When a cell has this
 	property, the data will be placed in the cell unmodified. This
 	makes it possible to place pre-prepared HTML code in the cell.
+
+	This change was suggested by Cristina Nunes.
 
 0.05	2006-06-08 15:46
 
