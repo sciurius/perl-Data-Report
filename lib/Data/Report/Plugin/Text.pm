@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Wed Dec 28 13:21:11 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Tue May 23 11:23:52 2006
-# Update Count    : 141
+# Last Modified On: Thu Aug  7 21:49:33 2008
+# Update Count    : 147
 # Status          : Unknown, Use with caution!
 
 package Data::Report::Plugin::Text;
@@ -58,6 +58,9 @@ sub add {
 
     foreach my $col ( @{$self->_get_fields} ) {
 	my $fname = $col->{name};
+	my $t = $style ? $self->_getstyle($style, $fname) : {};
+	next if $t->{ignore};
+
 	push(@values, defined($data->{$fname}) ? $data->{$fname} : "");
 	push(@widths, $col->{width});
 	if ($col->{truncate} ) {
@@ -68,30 +71,28 @@ sub add {
 	my $indent = 0;
 	my $wrapindent = 0;
 	my $excess = 0;
-	if ( $style ) {
-	    if ( my $t = $self->_getstyle($style, $fname) ) {
-		$indent = $t->{indent} || 0;
-		$wrapindent = defined($t->{wrap_indent}) ? $t->{wrap_indent} : $indent;
-		croak("Row $style, column $fname, ".
-		      "illegal value for indent property: $indent")
-		  if $indent < 0 || $indent >= $self->_get_fdata->{$fname}->{width};
-		croak("Row $style, column $fname, ".
-		      "illegal value for wrap_indent property: $wrapindent")
-		  if $wrapindent < 0 || $wrapindent >= $self->_get_fdata->{$fname}->{width};
-		if ( $t->{line_before} ) {
-		    $linebefore->{$fname} =
-		      ($t->{line_before} eq "1" ? "-" : $t->{line_before}) x $col->{width};
-		}
-		if ( $t->{line_after} ) {
-		    $lineafter->{$fname} =
-		      ($t->{line_after} eq "1" ? "-" : $t->{line_after}) x $col->{width};
-		}
-		if ( $t->{excess} ) {
-		    $widths[-1] += 2;
-		}
-		if ( $t->{truncate} || $col->{truncate} ) {
-		    $values[-1] = substr($values[-1], 0, $widths[-1] - $indent);
-		}
+	if ( $t ) {
+	    $indent = $t->{indent} || 0;
+	    $wrapindent = defined($t->{wrap_indent}) ? $t->{wrap_indent} : $indent;
+	    croak("Row $style, column $fname, ".
+		  "illegal value for indent property: $indent")
+	      if $indent < 0 || $indent >= $self->_get_fdata->{$fname}->{width};
+	    croak("Row $style, column $fname, ".
+		  "illegal value for wrap_indent property: $wrapindent")
+	      if $wrapindent < 0 || $wrapindent >= $self->_get_fdata->{$fname}->{width};
+	    if ( $t->{line_before} ) {
+		$linebefore->{$fname} =
+		  ($t->{line_before} eq "1" ? "-" : $t->{line_before}) x $col->{width};
+	    }
+	    if ( $t->{line_after} ) {
+		$lineafter->{$fname} =
+		  ($t->{line_after} eq "1" ? "-" : $t->{line_after}) x $col->{width};
+	    }
+	    if ( $t->{excess} ) {
+		$widths[-1] += 2;
+	    }
+	    if ( $t->{truncate} || $col->{truncate} ) {
+		$values[-1] = substr($values[-1], 0, $widths[-1] - $indent);
 	    }
 	}
 	push(@indents, [$indent, $wrapindent]);
@@ -175,7 +176,12 @@ sub _std_heading {
 
     # Print column names.
     my $t = sprintf($self->{format},
-		    map { $_->{title} } @{$self->_get_fields});
+		    map { $_->{title} }
+		    grep {
+			my $t = $self->_getstyle("head", $_->{name});
+			! $t->{ignore};
+		    }
+		    @{$self->_get_fields});
 
     # Add separator line.
     $t .= "-" x ($self->{width});
@@ -212,6 +218,9 @@ sub _make_format {
     my $format = "";		# new format
 
     foreach my $a ( @{$self->_get_fields} ) {
+
+	my $t = $self->_getstyle("head", $a->{name});
+	next if $t->{ignore};
 
 	# Never mind the trailing blanks -- we'll trim anyway.
 	$width += $a->{width} + 2;

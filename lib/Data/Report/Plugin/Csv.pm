@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Thu Jan  5 18:47:37 2006
 # Last Modified By: Johan Vromans
-# Last Modified On: Thu Aug  7 16:49:18 2008
-# Update Count    : 107
+# Last Modified On: Thu Aug  7 19:57:28 2008
+# Update Count    : 118
 # Status          : Unknown, Use with caution!
 
 package Data::Report::Plugin::Csv;
@@ -52,7 +52,12 @@ sub add {
     $line = $self->_csv
       ( map {
 	  $data->{$_->{name}} || ""
-        } @{$self->_get_fields}
+        }
+	grep {
+	    my $t = $self->_getstyle($style, $_->{name});
+	    ! $t->{ignore};
+	}
+	@{$self->_get_fields}
       );
     $self->_print($line, "\n");
 }
@@ -66,7 +71,17 @@ sub _std_heading {
     my ($self) = @_;
     my $sep = $self->get_separator;
 
-    $self->_print($self->_csv(map { $_->{title} } @{$self->_get_fields}), "\n");
+
+    $self->_print($self->_csv
+		  (map {
+		       $_->{title}
+		   }
+		   grep {
+		       my $t = $self->_getstyle("head", $_->{name});
+		       ! $t->{ignore};
+		   }
+		   @{$self->_get_fields}),
+		  "\n");
 }
 
 ################ Internal (used if no alternatives) ################

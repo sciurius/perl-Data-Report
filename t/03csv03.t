@@ -18,7 +18,7 @@ my $rep = Data::Report::->create
 my $out = "";
 $rep->set_stylist(sub {
     my ($self, $row, $col) = @_;
-    return { ignore => 1 } if $row eq "total" && !$col;
+    return { ignore => 1 } if $row && $row eq "total" && !$col;
     return;
 });
 $rep->set_output(\$out);

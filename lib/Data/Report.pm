@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Wed Dec 28 13:18:40 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Thu Aug  7 14:23:16 2008
-# Update Count    : 257
+# Last Modified On: Thu Aug  7 22:02:59 2008
+# Update Count    : 260
 # Status          : Unknown, Use with caution!
 
 package Data::Report;
@@ -15,7 +15,7 @@ Data::Report - Framework for flexible reporting
 
 =cut
 
-$VERSION = 0.08;
+$VERSION = 0.09;
 
 =head1 SYNOPSIS
 
@@ -405,6 +405,12 @@ C<1>, dashes are used.
 
 (Html) Do not escape special HTML characters, allowing pre-prepared
 HTML code to be placed in the output. Use with care.
+
+=item C<ignore>
+
+(All) Ignore this column. Note that to prevent surprising results, the
+column must be ignored in all applicable styles, including the special
+style C<"head"> that controls the heading.
 
 =back
 

@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Thu Dec 29 15:46:47 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Sun Aug  3 16:00:53 2008
-# Update Count    : 77
+# Last Modified On: Thu Aug  7 17:13:11 2008
+# Update Count    : 80
 # Status          : Unknown, Use with caution!
 
 package Data::Report::Plugin::Html;
@@ -61,7 +61,8 @@ sub add {
 	my $value = defined($data->{$fname}) ? $data->{$fname} : "";
 
 	# Examine style mods.
-	my $t = $self->_getstyle("*", $fname);
+	my $t = $self->_getstyle($style, $fname);
+	next if $t->{ignore};
 
 	$self->_print("<td ", _align($col->{align}),
 		      "class=\"c_$fname\">",
@@ -86,6 +87,11 @@ sub _std_heading {
 
     $self->_print("<tr class=\"head\">\n");
     foreach ( @{$self->_get_fields} ) {
+
+	# Examine style mods.
+	my $t = $self->_getstyle("head", $_->{name});
+	next if $t->{ignore};
+
 	$self->_print("<th ", _align($_->{align}),
 		      "class=\"h_", $_->{name}, "\">",
 		      $self->_html($_->{title}), "</th>\n");
