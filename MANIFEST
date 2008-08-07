@@ -21,6 +21,7 @@ t/03csv01.t
 t/03csv02.t
 t/03csv03.t
 t/03csv04.t
+t/03csv05.t
 t/09poc01.t
 t/09poc02.t
 t/09poc03.t
