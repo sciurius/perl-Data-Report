@@ -4,9 +4,6 @@ use strict;
 use warnings;
 use Test::More;
 
-plan(skip_all => "Text::CSV_XS not found"), exit
-  unless eval { require Text::CSV_XS };
-
 plan(tests => 1);
 
 use Data::Report;

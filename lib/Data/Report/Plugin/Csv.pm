@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Thu Jan  5 18:47:37 2006
 # Last Modified By: Johan Vromans
-# Last Modified On: Thu Aug  7 14:19:42 2008
-# Update Count    : 101
+# Last Modified On: Thu Aug  7 16:49:18 2008
+# Update Count    : 107
 # Status          : Unknown, Use with caution!
 
 package Data::Report::Plugin::Csv;
@@ -102,10 +102,18 @@ sub _set_csv_method {
 	    $csv_implementation->combine(@_);
 	    $csv_implementation->string;
 	};
+	warn("# CSV plugin uses Text::CSV_XS $Text::CSV_XS::VERSION\n")
+	  if $ENV{AUTOMATED_TESTING};
     }
     elsif ( $class && $class->isa("Text::CSV") ) {
 
-	$csv_implementation = Text::CSV->new;
+	# With modern Text::CSV, it will use Text::CSV_XS if possible.
+	# So this gotta be Text::CSV_PP...
+
+	$csv_implementation = Text::CSV->new
+	  ({ always_quote => 1,
+	     binary => 1,
+	   });
 
 	# Assign the method.
 	*_csv = sub {
@@ -113,11 +121,15 @@ sub _set_csv_method {
 	    $csv_implementation->combine(@_);
 	    $csv_implementation->string;
 	};
+	warn("# CSV plugin uses Text::CSV $Text::CSV::VERSION, PP version $Text::CSV_PP::VERSION\n")
+	  if $ENV{AUTOMATED_TESTING};
     }
     else {
 	# Use our internal method.
 	*_csv = \&_csv_internal;
 	$csv_implementation = "Data::Report::Plugin::Csv::_csv_internal";
+	warn("# CSV plugin uses built-in CSV packer\n")
+	  if $ENV{AUTOMATED_TESTING};
     }
 
     return $csv_implementation;
