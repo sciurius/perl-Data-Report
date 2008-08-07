@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Thu Jan  5 18:47:37 2006
 # Last Modified By: Johan Vromans
-# Last Modified On: Mon May 22 17:51:41 2006
-# Update Count    : 99
+# Last Modified On: Thu Aug  7 14:19:42 2008
+# Update Count    : 101
 # Status          : Unknown, Use with caution!
 
 package Data::Report::Plugin::Csv;
@@ -89,9 +89,11 @@ sub _set_csv_method {
     if ( $class && $class->isa("Text::CSV_XS") ) {
 
 	# Use always_quote to be compatible with Text::CSV.
+	# Use binary to deal with non-ASCII text.
 	$csv_implementation = Text::CSV_XS->new
 	  ({ sep_char => $self->get_separator,
 	     always_quote => 1,
+	     binary => 1,
 	   });
 
 	# Assign the method.
