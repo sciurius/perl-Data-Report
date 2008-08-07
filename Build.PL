@@ -35,6 +35,7 @@ my $builder = Module::Build->new(
     meta_add            => {
       no_index          => { package => [ qw(DB) ] },
     },
+    create_makefile_pl => 'traditional',
 );
 
 $builder->create_build_script;
