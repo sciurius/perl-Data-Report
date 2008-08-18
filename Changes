@@ -1,13 +1,21 @@
 Revision history for Data-Report
 
-0.09	2008-08-06
+0.10	2008-08-18
+
+	Add column property 'class' for HTML plugin. Can be used to
+	supply a different class from the default h_XXX and c_XXX.
+
+	The special row for headings has been changed from "head" to
+	"_head" to avoid conlicts with ordinary row styles.
+
+0.09	2008-08-07 22:16
 
 	Add column property 'ignore'. Does what the name implies.
 	This change was suggested by Mário Silva.
 
 	Upgrade requirements for Text::CSV to 1.00.
 
-0.08	2008-08-06 14:27
+0.08	2008-08-07 14:27
 
 	Allow handling of Latin texts with CSV plugin and Text::CSV_XS.
 	This change was suggested by Mário Silva.

@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Wed Dec 28 13:18:40 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Thu Aug  7 22:20:17 2008
-# Update Count    : 261
+# Last Modified On: Mon Aug 18 11:43:55 2008
+# Update Count    : 264
 # Status          : Unknown, Use with caution!
 
 package Data::Report;
@@ -321,7 +321,8 @@ and lines to rows and cells in a declarative way.
 When used, the stylist should be a reference to a possibly anonymous
 subroutine with three arguments: the reporter object, the style of a
 row (as specified with C<_style> in the C<add> method), and the name
-of a column as defined in the layout.
+of a column as defined in the layout. For table headings, the row name
+C<_head> is used.
 
 The stylist routine will be repeatedly called by the reporter to
 obtain formatting properties for rows and cells. It should return
@@ -410,7 +411,13 @@ HTML code to be placed in the output. Use with care.
 
 (All) Ignore this column. Note that to prevent surprising results, the
 column must be ignored in all applicable styles, including the special
-style C<"head"> that controls the heading.
+style C<"_head"> that controls the heading.
+
+=item C<class>
+
+(Html) Class name to be used for this cell. Default class name is
+"h_CNAME" for table headings and "c_CNAME" for table rows, where CNAME
+is the name of the column.
 
 =back
 
