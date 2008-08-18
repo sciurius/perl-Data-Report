@@ -3,8 +3,8 @@
 # Author          : Johan Vromans
 # Created On      : Wed Dec 28 13:18:40 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Mon Aug 18 11:43:55 2008
-# Update Count    : 264
+# Last Modified On: Mon Aug 18 11:52:01 2008
+# Update Count    : 265
 # Status          : Unknown, Use with caution!
 
 package Data::Report;
@@ -15,7 +15,7 @@ Data::Report - Framework for flexible reporting
 
 =cut
 
-$VERSION = 0.10;
+$VERSION = "0.10";
 
 =head1 SYNOPSIS
 
