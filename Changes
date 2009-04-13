@@ -11,14 +11,14 @@ Revision history for Data-Report
 0.09	2008-08-07 22:16
 
 	Add column property 'ignore'. Does what the name implies.
-	This change was suggested by Mário Silva.
+	This change was suggested by Mario Silva.
 
 	Upgrade requirements for Text::CSV to 1.00.
 
 0.08	2008-08-07 14:27
 
 	Allow handling of Latin texts with CSV plugin and Text::CSV_XS.
-	This change was suggested by Mário Silva.
+	This change was suggested by Mario Silva.
 
 0.07	2008-08-03 16:26
 
