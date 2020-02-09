@@ -1,5 +1,13 @@
 Revision history for Data-Report
 
+1.000	2020-02-09
+
+	After 12 years of full production, this deserves to
+	come out of beta :).
+	Fix some warnings.
+	Import CVS into Git and move to GitHub.
+	Switch to Makefile.PL building.
+
 0.10	2008-08-18
 
 	Add column property 'class' for HTML plugin. Can be used to
