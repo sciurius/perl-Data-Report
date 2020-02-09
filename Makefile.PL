@@ -39,31 +39,11 @@ WriteMakefile(
      version => '2',
      url     => 'https://metacpan.org/pod/CPAN::Meta::Spec',
    },
-   provides => {
-       "Data::Report"
-		=> { file => "lib/Text/Layout.pm",
-		     version => $version },
-       "Data::Report::FontConfig"
-		=> { file => "lib/Text/Layout/FontConfig.pm",
-		     version => $version },
-       "Data::Report::FontDescriptor"
-		=> { file => "lib/Text/Layout/FontDescriptor.pm",
-		     version => $version },
-   },
    recommends => {
 		  'HTML::Entities' => 0,
    },
 
    no_index => {
-         file => [
-		  "lib/Text/Layout/Cairo.pm",
-		  "lib/Text/Layout/Markdown.pm",
-		  "lib/Text/Layout/Pango.pm",
-		  "lib/Text/Layout/PDFAPI2.pm",
-	 ],
-       directory => [
-	  "tests",
-       ],
        package => [ qw(DB) ],
    },
  }

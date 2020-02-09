@@ -2,8 +2,8 @@
 # Author          : Johan Vromans
 # Created On      : Wed Dec 28 13:18:40 2005
 # Last Modified By: Johan Vromans
-# Last Modified On: Sun Feb  9 20:34:43 2020
-# Update Count    : 270
+# Last Modified On: Sun Feb  9 20:52:04 2020
+# Update Count    : 271
 # Status          : Unknown, Use with caution!
 
 use strict;
@@ -17,7 +17,7 @@ Data::Report - Framework for flexible reporting
 
 =cut
 
-our $VERSION = "1.000";
+our $VERSION = "1.001";
 
 =head1 SYNOPSIS
 

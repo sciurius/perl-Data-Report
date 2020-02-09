@@ -1,6 +1,10 @@
 Revision history for Data-Report
 
-1.000	2020-02-09
+1.001	2020-02-09 20:52
+
+	Small Makefile.PL fixes.
+
+1.000	2020-02-09 20:37
 
 	After 12 years of full production, this deserves to
 	come out of beta :).
